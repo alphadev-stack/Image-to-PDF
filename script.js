@@ -124,7 +124,17 @@ convertBtn.addEventListener("click", async function(){
 
     }
 
+   showLoader();
+
+   setTimeout(() => {
+
     pdf.save("AlphaDevStack.pdf");
+
+    hideLoader();
+
+    showToast();
+
+    }, 1000);
     progressBar.style.width="0%";
 
     progressText.innerHTML="0%";
