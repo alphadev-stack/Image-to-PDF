@@ -1,31 +1,1174 @@
-button{
+/* Google Font */
 
-    width:100%;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-    margin-top:20px;
+html{
+scroll-behavior:smooth;
+}
 
-    padding:15px;
+body{
 
-    background:#2563eb;
+background:#050816;
 
-    color:white;
+color:white;
 
-    border:none;
+overflow-x:hidden;
 
-    border-radius:10px;
+min-height:100vh;
 
-    cursor:pointer;
-
-    font-size:18px;
-
-    transition:.3s;
+position:relative;
 
 }
 
-button:hover{
+/* Background */
 
-    background:#1d4ed8;
+.bg-circle{
 
-    transform:translateY(-2px);
+position:fixed;
+
+border-radius:50%;
+
+filter:blur(120px);
+
+z-index:-1;
+
+}
+
+.one{
+
+width:350px;
+
+height:350px;
+
+background:#2563eb;
+
+top:-120px;
+
+left:-120px;
+
+opacity:.4;
+
+}
+
+.two{
+
+width:400px;
+
+height:400px;
+
+background:#7c3aed;
+
+bottom:-150px;
+
+right:-150px;
+
+opacity:.35;
+
+}
+
+/* Navbar */
+
+nav{
+
+width:100%;
+
+height:80px;
+
+padding:0 8%;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+position:sticky;
+
+top:0;
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(20px);
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+z-index:1000;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-size:20px;
+
+font-weight:700;
+
+}
+
+.logo i{
+
+font-size:30px;
+
+color:#4f8cff;
+
+}
+
+nav ul{
+
+display:flex;
+
+gap:40px;
+
+list-style:none;
+
+}
+
+nav ul li a{
+
+text-decoration:none;
+
+color:white;
+
+font-weight:500;
+
+transition:.3s;
+
+}
+
+nav ul li a:hover{
+
+color:#60a5fa;
+
+}
+
+.darkBtn{
+
+padding:12px 22px;
+
+border:none;
+
+border-radius:12px;
+
+background:linear-gradient(135deg,#3b82f6,#7c3aed);
+
+color:white;
+
+cursor:pointer;
+
+font-size:15px;
+
+transition:.3s;
+
+}
+
+.darkBtn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 40px rgba(59,130,246,.4);
+
+}
+
+/* Hero */
+
+.hero{
+
+max-width:1200px;
+
+margin:auto;
+
+padding:70px 20px;
+
+text-align:center;
+
+}
+
+.badge{
+
+display:inline-block;
+
+padding:10px 18px;
+
+background:rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.1);
+
+border-radius:50px;
+
+margin-bottom:35px;
+
+font-size:15px;
+
+}
+
+.hero h1{
+
+font-size:70px;
+
+line-height:1.1;
+
+font-weight:800;
+
+margin-bottom:20px;
+
+}
+
+.hero span{
+
+background:linear-gradient(90deg,#3b82f6,#7c3aed);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+.hero p{
+
+max-width:700px;
+
+margin:auto;
+
+color:#94a3b8;
+
+font-size:18px;
+
+line-height:30px;
+
+}
+/* ===========================
+   UPLOAD BOX
+=========================== */
+
+.uploadBox{
+
+width:100%;
+
+max-width:900px;
+
+margin:60px auto;
+
+padding:60px 40px;
+
+background:rgba(255,255,255,.06);
+
+border:2px dashed rgba(96,165,250,.5);
+
+border-radius:30px;
+
+backdrop-filter:blur(20px);
+
+transition:.4s;
+
+cursor:pointer;
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.uploadBox:hover{
+
+transform:translateY(-8px);
+
+border-color:#60a5fa;
+
+box-shadow:0 25px 60px rgba(59,130,246,.25);
+
+background:rgba(255,255,255,.08);
+
+}
+
+.uploadBox::before{
+
+content:"";
+
+position:absolute;
+
+top:-50%;
+
+left:-50%;
+
+width:200%;
+
+height:200%;
+
+background:linear-gradient(
+
+45deg,
+
+transparent,
+
+rgba(255,255,255,.05),
+
+transparent
+
+);
+
+transform:rotate(25deg);
+
+animation:shine 6s linear infinite;
+
+}
+
+@keyframes shine{
+
+0%{
+
+transform:translateX(-100%) rotate(25deg);
+
+}
+
+100%{
+
+transform:translateX(100%) rotate(25deg);
+
+}
+
+}
+
+/* Upload Icon */
+
+.uploadIcon{
+
+width:120px;
+
+height:120px;
+
+margin:auto;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:linear-gradient(135deg,#3b82f6,#7c3aed);
+
+border-radius:50%;
+
+font-size:55px;
+
+color:white;
+
+box-shadow:0 15px 40px rgba(59,130,246,.45);
+
+animation:float 3s ease-in-out infinite;
+
+}
+
+@keyframes float{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-10px);
+
+}
+
+}
+
+/* Upload Heading */
+
+.uploadBox h2{
+
+font-size:34px;
+
+margin-top:35px;
+
+font-weight:700;
+
+}
+
+.uploadBox p{
+
+margin-top:18px;
+
+font-size:18px;
+
+color:#94a3b8;
+
+}
+
+/* Upload Button */
+
+.uploadBtn{
+
+display:inline-block;
+
+margin-top:30px;
+
+padding:18px 45px;
+
+background:linear-gradient(135deg,#3b82f6,#7c3aed);
+
+color:white;
+
+font-size:18px;
+
+font-weight:600;
+
+border-radius:16px;
+
+cursor:pointer;
+
+transition:.35s;
+
+text-decoration:none;
+
+box-shadow:0 15px 35px rgba(59,130,246,.35);
+
+}
+
+.uploadBtn:hover{
+
+transform:translateY(-5px);
+
+box-shadow:0 25px 50px rgba(59,130,246,.5);
+
+}
+
+/* Small Text */
+
+.small{
+
+margin-top:25px;
+
+font-size:15px;
+
+letter-spacing:1px;
+
+color:#64748b;
+
+}
+
+/* Hide File Input */
+
+input[type=file]{
+
+display:none;
+
+}
+┌────────────┐
+📷
+Multiple Images
+Merge unlimited images
+└────────────┘
+
+┌────────────┐
+🛡
+100% Secure
+Your files stay local
+└────────────┘
+
+┌────────────┐
+⚡
+Fast
+Instant conversion
+└────────────┘
+
+┌────────────┐
+📄
+High Quality
+No compression
+└────────────┘
+/* ===========================
+   IMAGE PREVIEW
+=========================== */
+
+.title{
+
+margin-top:80px;
+
+font-size:42px;
+
+font-weight:700;
+
+text-align:center;
+
+margin-bottom:40px;
+
+}
+
+/* Preview Container */
+
+.preview{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:25px;
+
+width:100%;
+
+max-width:1200px;
+
+margin:auto;
+
+}
+
+/* Image Card */
+
+.imageCard{
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(20px);
+
+border-radius:22px;
+
+padding:18px;
+
+transition:.35s;
+
+position:relative;
+
+overflow:hidden;
+
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+/* Hover Effect */
+
+.imageCard:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 25px 60px rgba(59,130,246,.35);
+
+}
+
+/* Image */
+
+.imageCard img{
+
+width:100%;
+
+height:220px;
+
+object-fit:cover;
+
+border-radius:16px;
+
+transition:.35s;
+
+}
+
+.imageCard:hover img{
+
+transform:scale(1.05);
+
+}
+
+/* Image Name */
+
+.imageName{
+
+margin-top:15px;
+
+font-size:15px;
+
+color:#cbd5e1;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+/* Delete Button */
+
+.removeBtn{
+
+position:absolute;
+
+top:15px;
+
+right:15px;
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:50%;
+
+background:#ef4444;
+
+color:white;
+
+font-size:18px;
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+transition:.3s;
+
+box-shadow:0 10px 25px rgba(239,68,68,.4);
+
+}
+
+.removeBtn:hover{
+
+background:#dc2626;
+
+transform:scale(1.1);
+
+}
+
+/* Image Counter */
+
+.counter{
+
+margin-top:35px;
+
+text-align:center;
+
+font-size:18px;
+
+font-weight:600;
+
+color:#94a3b8;
+
+}
+/* ===========================
+   CONVERT BUTTON
+=========================== */
+
+#convertBtn{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:15px;
+
+width:100%;
+
+max-width:420px;
+
+margin:60px auto;
+
+padding:20px;
+
+font-size:22px;
+
+font-weight:700;
+
+color:white;
+
+background:linear-gradient(135deg,#3b82f6,#7c3aed);
+
+border:none;
+
+border-radius:20px;
+
+cursor:pointer;
+
+transition:.35s;
+
+box-shadow:0 20px 50px rgba(59,130,246,.35);
+
+}
+
+#convertBtn i{
+
+font-size:24px;
+
+}
+
+#convertBtn:hover{
+
+transform:translateY(-6px) scale(1.02);
+
+box-shadow:0 30px 70px rgba(59,130,246,.5);
+
+}
+
+#convertBtn:active{
+
+transform:scale(.98);
+
+}
+
+/* ===========================
+   LOADING STATE
+=========================== */
+
+.loading{
+
+pointer-events:none;
+
+opacity:.8;
+
+}
+
+.loading::after{
+
+content:"";
+
+width:22px;
+
+height:22px;
+
+margin-left:12px;
+
+border:3px solid rgba(255,255,255,.3);
+
+border-top:3px solid white;
+
+border-radius:50%;
+
+display:inline-block;
+
+animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+0%{
+
+transform:rotate(0deg);
+
+}
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+footer{
+
+margin-top:100px;
+
+padding:35px 20px;
+
+text-align:center;
+
+color:#94a3b8;
+
+font-size:16px;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+background:rgba(255,255,255,.03);
+
+backdrop-filter:blur(20px);
+
+}
+
+footer span{
+
+color:#60a5fa;
+
+font-weight:600;
+
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar{
+
+width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#0b1120;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:linear-gradient(#3b82f6,#7c3aed);
+
+border-radius:10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+background:#60a5fa;
+
+}
+/* ===========================
+   RESPONSIVE DESIGN
+=========================== */
+
+/* Laptop */
+
+@media (max-width:1200px){
+
+.hero h1{
+
+font-size:60px;
+
+}
+
+.features{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+.preview{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+/* Tablet */
+
+@media (max-width:992px){
+
+nav{
+
+padding:0 5%;
+
+}
+
+nav ul{
+
+gap:20px;
+
+}
+
+.hero{
+
+padding:60px 20px;
+
+}
+
+.hero h1{
+
+font-size:48px;
+
+}
+
+.hero p{
+
+font-size:17px;
+
+}
+
+.uploadBox{
+
+padding:45px 25px;
+
+}
+
+.uploadBox h2{
+
+font-size:28px;
+
+}
+
+.features{
+
+grid-template-columns:repeat(2,1fr);
+
+gap:20px;
+
+}
+
+.preview{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+nav{
+
+height:auto;
+
+padding:20px;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+nav ul{
+
+flex-direction:column;
+
+gap:15px;
+
+text-align:center;
+
+}
+
+.logo h2{
+
+font-size:22px;
+
+}
+
+.hero{
+
+padding:40px 20px;
+
+}
+
+.hero h1{
+
+font-size:38px;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+line-height:28px;
+
+}
+
+.badge{
+
+font-size:13px;
+
+padding:8px 15px;
+
+}
+
+.uploadBox{
+
+padding:35px 20px;
+
+}
+
+.uploadIcon{
+
+width:90px;
+
+height:90px;
+
+font-size:42px;
+
+}
+
+.uploadBox h2{
+
+font-size:24px;
+
+}
+
+.uploadBtn{
+
+width:100%;
+
+padding:16px;
+
+}
+
+.features{
+
+grid-template-columns:1fr;
+
+}
+
+.preview{
+
+grid-template-columns:1fr;
+
+}
+
+.imageCard img{
+
+height:220px;
+
+}
+
+#convertBtn{
+
+width:100%;
+
+font-size:18px;
+
+padding:18px;
+
+}
+
+footer{
+
+font-size:14px;
+
+}
+
+}
+
+/* Small Phones */
+
+@media (max-width:480px){
+
+.hero h1{
+
+font-size:30px;
+
+}
+
+.hero p{
+
+font-size:15px;
+
+}
+
+.uploadBox{
+
+padding:30px 15px;
+
+}
+
+.uploadIcon{
+
+width:80px;
+
+height:80px;
+
+font-size:36px;
+
+}
+
+.uploadBox h2{
+
+font-size:20px;
+
+}
+
+.title{
+
+font-size:30px;
+
+}
+
+.imageCard img{
+
+height:180px;
+
+}
+
+.darkBtn{
+
+width:100%;
+
+}
+
+}
+/* ===========================
+   FEATURES
+=========================== */
+
+.features{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+margin:70px auto;
+
+max-width:1200px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+border-radius:22px;
+
+padding:35px;
+
+text-align:center;
+
+transition:.35s;
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 20px 50px rgba(59,130,246,.25);
+
+}
+
+.card i{
+
+font-size:45px;
+
+margin-bottom:20px;
+
+color:#60a5fa;
+
+}
+
+.card h3{
+
+margin-bottom:10px;
+
+font-size:22px;
+
+}
+
+.card p{
+
+color:#94a3b8;
 
 }
