@@ -1,250 +1,86 @@
-const progressBar=document.getElementById("progressBar");
-
-const progressText=document.getElementById("progressText");
-
-const pageSize=document.getElementById("pageSize");
-
-const fitMode=document.getElementById("fitMode");// ==============================
-// AlphaDev Stack - Image to PDF
-// ==============================
-
-const input = document.getElementById("imageInput");
-const preview = document.getElementById("preview");
-const convertBtn = document.getElementById("convertBtn");
-
-let images = [];
-
-// Upload Images
-input.addEventListener("change", function (e) {
-
-    images = [...images, ...Array.from(e.target.files)];
-
-    renderImages();
-
-});
-
-// Render Preview
-function renderImages() {
-
-    preview.innerHTML = "";
-
-    images.forEach((file, index) => {
-
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            const card = document.createElement("div");
-            card.className = "imageCard";
-
-            card.innerHTML = `
-
-            <button class="removeBtn" onclick="removeImage(${index})">
-
-            <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-            <img src="${event.target.result}">
-
-            <p class="imageName">${file.name}</p>
-
-            `;
-
-            preview.appendChild(card);
-
-        }
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
-
-// Delete Image
-window.removeImage = function(index){
-
-    images.splice(index,1);
-
-    renderImages();
-
-}
-
-// Convert PDF
-convertBtn.addEventListener("click", async function(){
+convertBtn.addEventListener("click", async function () {
 
     if(images.length===0){
-
-        alert("Please upload images first.");
-
+        alert("Upload images first");
         return;
-
     }
 
-    convertBtn.classList.add("loading");
+    convertBtn.disabled=true;
 
-    convertBtn.innerHTML="Creating PDF";
+    const sizes={
+        A4:[210,297],
+        Letter:[216,279],
+        Legal:[216,356]
+    };
 
-    const { jsPDF } = window.jspdf;
+    const selected=pageSize.value;
 
-    const pdf = new jsPDF();
+    const pdf=new jspdf.jsPDF({
+        orientation:"portrait",
+        unit:"mm",
+        format:sizes[selected]
+    });
+
+    const pdfWidth=sizes[selected][0];
+    const pdfHeight=sizes[selected][1];
 
     for(let i=0;i<images.length;i++){
-        let percent=Math.round(((i+1)/images.length)*100);
 
-        progressBar.style.width=percent+"%";
+        progressBar.style.width=((i+1)/images.length*100)+"%";
+        progressText.innerHTML=Math.round((i+1)/images.length*100)+"%";
 
-        progressText.innerHTML=percent+"%";
-
-        const file=images[i];
-
-        const data=await readFile(file);
+        const data=await readFile(images[i]);
 
         const img=new Image();
 
         img.src=data;
 
-        await new Promise(resolve=>{
+        await new Promise(r=>img.onload=r);
 
-            img.onload=resolve;
+        let w,h,x=0,y=0;
 
-        });
+        if(fitMode.value==="fit"){
 
-        const width=210;
+            const ratio=Math.min(pdfWidth/img.width,pdfHeight/img.height);
 
-        const height=(img.height/img.width)*210;
+            w=img.width*ratio;
+            h=img.height*ratio;
 
-        if(i>0){
-
-            pdf.addPage();
+            x=(pdfWidth-w)/2;
+            y=(pdfHeight-h)/2;
 
         }
 
-        pdf.addImage(data,"JPEG",0,0,width,height);
+        else if(fitMode.value==="fill"){
+
+            w=pdfWidth;
+            h=pdfHeight;
+
+        }
+
+        else{
+
+            const ratio=pdfWidth/img.width;
+
+            w=pdfWidth;
+            h=img.height*ratio;
+
+        }
+
+        if(i>0)
+            pdf.addPage();
+
+        pdf.addImage(data,"JPEG",x,y,w,h);
 
     }
 
-   showLoader();
-
-   setTimeout(() => {
-
     pdf.save("AlphaDevStack.pdf");
 
-    hideLoader();
-
-    showToast();
-
-    }, 1000);
     progressBar.style.width="0%";
-
     progressText.innerHTML="0%";
 
-    showToast("✅ PDF Downloaded Successfully");
+    showToast("PDF Downloaded Successfully");
 
-    convertBtn.classList.remove("loading");
-
-    convertBtn.innerHTML=`<i class="fa-solid fa-file-arrow-down"></i> Convert To PDF`;
+    convertBtn.disabled=false;
 
 });
-
-// Read File
-function readFile(file){
-
-    return new Promise(resolve=>{
-
-        const reader=new FileReader();
-
-        reader.onload=e=>resolve(e.target.result);
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
-// Drag & Drop
-
-const uploadBox = document.querySelector(".uploadBox");
-
-["dragenter","dragover"].forEach(event=>{
-
-uploadBox.addEventListener(event,e=>{
-
-e.preventDefault();
-
-uploadBox.style.borderColor="#3b82f6";
-
-});
-
-});
-
-["dragleave","drop"].forEach(event=>{
-
-uploadBox.addEventListener(event,e=>{
-
-e.preventDefault();
-
-uploadBox.style.borderColor="rgba(96,165,250,.5)";
-
-});
-
-});
-
-uploadBox.addEventListener("drop",e=>{
-
-images=[...images,...Array.from(e.dataTransfer.files)];
-
-renderImages();
-
-});
-function showToast(message){
-
-const toast=document.createElement("div");
-
-toast.innerText=message;
-
-toast.style.position="fixed";
-
-toast.style.bottom="30px";
-
-toast.style.right="30px";
-
-toast.style.padding="15px 25px";
-
-toast.style.background="#22c55e";
-
-toast.style.color="white";
-
-toast.style.borderRadius="12px";
-
-toast.style.fontWeight="600";
-
-toast.style.zIndex="9999";
-
-toast.style.boxShadow="0 10px 30px rgba(0,0,0,.3)";
-
-document.body.appendChild(toast);
-
-setTimeout(()=>{
-
-toast.remove();
-
-},3000);
-
-}
-const toggle=document.getElementById("themeToggle");
-
-toggle.onclick=()=>{
-
-document.body.classList.toggle("light");
-
-if(document.body.classList.contains("light")){
-
-toggle.innerHTML="☀️ Light Mode";
-
-}else{
-
-toggle.innerHTML="🌙 Dark Mode";
-
-}
-
-}
