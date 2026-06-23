@@ -1,60 +1,107 @@
-const imageInput = document.getElementById("images");
+// ==============================
+// AlphaDev Stack - Image to PDF
+// ==============================
+
+const input = document.getElementById("imageInput");
 const preview = document.getElementById("preview");
+const convertBtn = document.getElementById("convertBtn");
 
-let files = [];
+let images = [];
 
-imageInput.addEventListener("change", (e) => {
+// Upload Images
+input.addEventListener("change", function (e) {
 
-    files = [...e.target.files];
+    images = [...images, ...Array.from(e.target.files)];
+
+    renderImages();
+
+});
+
+// Render Preview
+function renderImages() {
 
     preview.innerHTML = "";
 
-    files.forEach(file => {
+    images.forEach((file, index) => {
 
         const reader = new FileReader();
 
-        reader.onload = function(event){
+        reader.onload = function (event) {
 
-            const img = document.createElement("img");
+            const card = document.createElement("div");
+            card.className = "imageCard";
 
-            img.src = event.target.result;
+            card.innerHTML = `
 
-            preview.appendChild(img);
+            <button class="removeBtn" onclick="removeImage(${index})">
 
-        };
+            <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <img src="${event.target.result}">
+
+            <p class="imageName">${file.name}</p>
+
+            `;
+
+            preview.appendChild(card);
+
+        }
 
         reader.readAsDataURL(file);
 
     });
 
-});
+}
 
-async function convertPDF(){
+// Delete Image
+window.removeImage = function(index){
 
-    if(files.length===0){
+    images.splice(index,1);
 
-        alert("Please select at least one image.");
+    renderImages();
+
+}
+
+// Convert PDF
+convertBtn.addEventListener("click", async function(){
+
+    if(images.length===0){
+
+        alert("Please upload images first.");
 
         return;
+
     }
+
+    convertBtn.classList.add("loading");
+
+    convertBtn.innerHTML="Creating PDF";
 
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF();
 
-    for(let i=0;i<files.length;i++){
+    for(let i=0;i<images.length;i++){
 
-        const data = await fileToData(files[i]);
+        const file=images[i];
 
-        const img = new Image();
+        const data=await readFile(file);
 
-        img.src = data;
+        const img=new Image();
 
-        await new Promise(resolve => img.onload = resolve);
+        img.src=data;
 
-        const pdfWidth = 210;
+        await new Promise(resolve=>{
 
-        const pdfHeight = (img.height * pdfWidth) / img.width;
+            img.onload=resolve;
+
+        });
+
+        const width=210;
+
+        const height=(img.height/img.width)*210;
 
         if(i>0){
 
@@ -62,31 +109,101 @@ async function convertPDF(){
 
         }
 
-        pdf.addImage(
-            data,
-            "JPEG",
-            0,
-            0,
-            pdfWidth,
-            pdfHeight
-        );
+        pdf.addImage(data,"JPEG",0,0,width,height);
 
     }
 
-    pdf.save("Images.pdf");
+    pdf.save("AlphaDevStack.pdf");
 
-}
+    showToast("✅ PDF Downloaded Successfully");
 
-function fileToData(file){
+    convertBtn.classList.remove("loading");
+
+    convertBtn.innerHTML=`<i class="fa-solid fa-file-arrow-down"></i> Convert To PDF`;
+
+});
+
+// Read File
+function readFile(file){
 
     return new Promise(resolve=>{
 
-        const reader = new FileReader();
+        const reader=new FileReader();
 
-        reader.onload = e => resolve(e.target.result);
+        reader.onload=e=>resolve(e.target.result);
 
         reader.readAsDataURL(file);
 
     });
+
+}
+// Drag & Drop
+
+const uploadBox = document.querySelector(".uploadBox");
+
+["dragenter","dragover"].forEach(event=>{
+
+uploadBox.addEventListener(event,e=>{
+
+e.preventDefault();
+
+uploadBox.style.borderColor="#3b82f6";
+
+});
+
+});
+
+["dragleave","drop"].forEach(event=>{
+
+uploadBox.addEventListener(event,e=>{
+
+e.preventDefault();
+
+uploadBox.style.borderColor="rgba(96,165,250,.5)";
+
+});
+
+});
+
+uploadBox.addEventListener("drop",e=>{
+
+images=[...images,...Array.from(e.dataTransfer.files)];
+
+renderImages();
+
+});
+function showToast(message){
+
+const toast=document.createElement("div");
+
+toast.innerText=message;
+
+toast.style.position="fixed";
+
+toast.style.bottom="30px";
+
+toast.style.right="30px";
+
+toast.style.padding="15px 25px";
+
+toast.style.background="#22c55e";
+
+toast.style.color="white";
+
+toast.style.borderRadius="12px";
+
+toast.style.fontWeight="600";
+
+toast.style.zIndex="9999";
+
+toast.style.boxShadow="0 10px 30px rgba(0,0,0,.3)";
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+
+toast.remove();
+
+},3000);
 
 }
